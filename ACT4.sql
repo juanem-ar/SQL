@@ -103,8 +103,42 @@ PRIMARY KEY (`IdFormaPago`)
 );
 
 -- -----------------------------------------------------
+-- Table `Service`.`ConfirmacionOrden`
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `Service`.`ConfirmacionOrden`
+(
+`IdConfirmacionOrden` INT NOT NULL AUTO_INCREMENT,
+`Confirmacion` ENUM('Si','No'),
+PRIMARY KEY (`IdConfirmacionOrden`)
+);
+
+-- -----------------------------------------------------
 -- TABLAS COMPLEJAS
 -- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Table `Service`.`OrdenTrabajo`
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `Service`.`OrdenTrabajo`
+(
+`NumeroOrden` INT NOT NULL AUTO_INCREMENT,
+`Fecha` DATE NOT NULL,
+`Cliente_Tipo` ENUM('DNI','LC','LE') NOT NULL,
+`Cliente_DNI` INT(8) NOT NULL,
+`ConfirmacionOrden_IdConfirmacionOrden` INT NOT NULL,
+PRIMARY KEY (`NumeroOrden`),
+CONSTRAINT `fk_OrdenTrabajo_Cliente1`
+	FOREIGN KEY (`Cliente_Tipo`,`Cliente_DNI`)
+	REFERENCES `Service`.`Cliente`(`Tipo`,`DNI`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+CONSTRAINT `fk_OrdenTrabajo_Confirmado1`
+	FOREIGN KEY (`ConfirmacionOrden_IdConfirmacionOrden`)
+	REFERENCES `Service`.`ConfirmacionOrden`(`IdConfirmacionOrden`)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE
+);
 
 -- -----------------------------------------------------
 -- Table `Service`.`Cliente`
@@ -149,25 +183,6 @@ CONSTRAINT `fk_Equipo_Cliente1`
 CONSTRAINT `fk_Equipo_TipoEquipo1`
 	FOREIGN KEY (`TipoEquipo_IdTipoEquipo`)
 	REFERENCES `Service`.`TipoEquipo`(`IdTipoEquipo`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
-
--- -----------------------------------------------------
--- Table `Service`.`OrdenTrabajo`
--- -----------------------------------------------------
-
-CREATE TABLE IF NOT EXISTS `Service`.`OrdenTrabajo`
-(
-`NumeroOrden` INT NOT NULL AUTO_INCREMENT,
-`Fecha` DATE NOT NULL,
-`Confirmado` BIT(2) NOT NULL,
-`Cliente_Tipo` ENUM('DNI','LC','LE') NOT NULL,
-`Cliente_DNI` INT(8) NOT NULL,
-PRIMARY KEY (`NumeroOrden`),
-CONSTRAINT `fk_OrdenTrabajo_Cliente1`
-	FOREIGN KEY (`Cliente_Tipo`,`Cliente_DNI`)
-	REFERENCES `Service`.`Cliente`(`Tipo`,`DNI`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );
