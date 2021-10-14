@@ -235,6 +235,7 @@ CREATE TABLE IF NOT EXISTS `Service`.`Cliente_has_Telefono`
 `Cliente_Tipo` ENUM('DNI','LC','LE') NOT NULL,
 `Cliente_DNI` INT(8) NOT NULL,
 `Telefono_IdTelefono` INT NOT NULL,
+PRIMARY KEY (`Cliente_Tipo`, `Cliente_DNI`, `Telefono_IdTelefono`),
 CONSTRAINT `fk_Cliente_has_Telefono_Cliente1`
 	FOREIGN KEY (`Cliente_Tipo`,`Cliente_DNI`)
 	REFERENCES `Service`.`Cliente`(`Tipo`,`DNI`)
@@ -254,6 +255,7 @@ CREATE TABLE IF NOT EXISTS `Service`.`Cliente_has_Empresa`
 `Cliente_Tipo` ENUM('DNI','LC','LE') NOT NULL,
 `Cliente_DNI` INT(8) NOT NULL,
 `Empresa_CUIT` INT(13) NOT NULL,
+PRIMARY KEY (`Cliente_Tipo`, `Cliente_DNI`, `Empresa_CUIT`),
 CONSTRAINT `fk_Cliente_has_Empresa_Cliente1`
 	FOREIGN KEY (`Cliente_Tipo`,`Cliente_DNI`)
 	REFERENCES `Service`.`Cliente`(`Tipo`,`DNI`)
@@ -274,6 +276,7 @@ CREATE TABLE IF NOT EXISTS `Service`.`OrdenTrabajo_has_Equipo`
 (
 `Equipo_IdEquipo` INT NOT NULL,
 `OrdenTrabajo_NumeroOrden` INT NOT NULL,
+PRIMARY KEY (`Equipo_IdEquipo`, `OrdenTrabajo_NumeroOrden`),
 CONSTRAINT `fk_OrdenTrabajo_has_Equipo_Equipo1`
 	FOREIGN KEY (`Equipo_IdEquipo`)
 	REFERENCES `Service`.`Equipo`(`IdEquipo`)
@@ -294,6 +297,7 @@ CREATE TABLE IF NOT EXISTS `Service`.`OrdenTrabajo_has_Item`
 (
 `Item_IdItem` INT NOT NULL,
 `OrdenTrabajo_NumeroOrden` INT NOT NULL,
+PRIMARY KEY (`Item_IdItem`, `OrdenTrabajo_NumeroOrden`),
 CONSTRAINT `fk_OrdenTrabajo_has_Item_Item1`
 	FOREIGN KEY (`Item_IdItem`)
 	REFERENCES `Service`.`Item`(`IdItem`)
